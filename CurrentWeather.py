@@ -33,7 +33,7 @@ while answer:
         print("==== Enter appropriate city ===")
         continue
 
-    print("City :", js['name'])
+    print("City : "+ js['name'])
     print("Country Code :", js['sys']['country'])
     print("Weather condition : ", js['weather'][0]['main'], ",", js['weather'][0]['description'])
     print("Temperature :", '%.3f' % (js['main']['temp'] - 273.15), u"\N{DEGREE SIGN}", "C")
