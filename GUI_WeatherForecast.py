@@ -10,7 +10,7 @@ window = Tk()
 window.configure(bg="white")
 window.title("Weather forecast")
 window.iconbitmap('icon.ico')
-window.geometry("385x520")
+window.geometry("385x530")
 
 myString = StringVar()
 place = StringVar()
@@ -26,7 +26,7 @@ sunset = StringVar()
 
 
 def weather():
-    api_key = 'API_KEY'  #enter your api key
+    api_key = 'API_KEY'  #Enter your api key
     serviceurl = 'https://api.openweathermap.org/data/2.5/weather?'
 
     ctx = ssl.create_default_context()
@@ -58,6 +58,8 @@ def weather():
         pressure.set("")
         humidity.set("")
         speed.set("")
+        rise.set("")
+        sunset.set("")
         messagebox.showinfo("Error", "Enter appropriate city")
 
     else:
@@ -67,14 +69,14 @@ def weather():
         temperature.set("Temperature :" + '%.3f' % (js['main']['temp'] - 273.15) + u"\N{DEGREE SIGN}" + "C")
         tempRange.set("Temperature range : " + '%.3f' % (
                 js['main']['temp_min'] - 273.15) + u"\N{DEGREE SIGN}" + "C - " + '%.3f' % (
-                              js['main']['temp_max'] - 273.15) + u"\N{DEGREE SIGN}" + "C")
+                              js['main']['temp_max'] - 273.15) + u"\N{DEGREE SIGN}" +  "C")
         pressure.set("Pressure : " + str(js['main']['pressure']) + "hPa")
         humidity.set("Humidity : " + str(js['main']['humidity']) + "%")
         speed.set("Wind speed : " + str(js['wind']['speed']) + "m/s")
-        # sunrise = time.strftime("%D %H:%M" + time.localtime(int(js['sys']['sunrise']))).split()
-        # Sunset = time.strftime("%D %H:%M" + time.localtime(int(js['sys']['sunset']))).split()
-        # rise.set("Sunrise time : " + sunrise[1])
-        # sunset.set("Sunset time : " + Sunset[1])
+        sunrise = time.strftime("%D %H:%M", time.gmtime(int(js['sys']['sunrise'])+int(js['timezone']))).split()
+        Sunset = time.strftime("%D %H:%M", time.gmtime(int(js['sys']['sunset'])+int(js['timezone']))).split()
+        rise.set("Sunrise time : " + sunrise[1])
+        sunset.set("Sunset time : " + Sunset[1])
 
 
 logo = ImageTk.PhotoImage(Image.open("logo.png"))
@@ -87,24 +89,26 @@ entry1.grid(row=1, column=1, ipady=1)
 Button1 = Button(frame, text="Search", command=weather, bg="white", width=6, font="Helvetica 10").grid(row=1, column=2)
 
 label2 = Label(frame, textvariable=place, bg="white", font="Helvetica 12 bold")
-label2.grid(row=2, columnspan=3, pady=10)
+label2.grid(row=2, columnspan=3, pady=5)
 label3 = Label(frame, textvariable=country, bg="white", font="Helvetica 12 bold")
-label3.grid(row=3, columnspan=3, pady=10)
+label3.grid(row=3, columnspan=3, pady=5)
 label4 = Label(frame, textvariable=condition, bg="white", font="Helvetica 12 bold")
-label4.grid(row=4, columnspan=3, pady=10)
+label4.grid(row=4, columnspan=3, pady=5)
 label5 = Label(frame, textvariable=temperature, bg="white", font="Helvetica 11 bold")
-label5.grid(row=5, columnspan=3, pady=10)
+label5.grid(row=5, columnspan=3, pady=5)
 label6 = Label(frame, textvariable=tempRange, bg="white", font="Helvetica 11")
-label6.grid(row=6, columnspan=3, pady=10)
+label6.grid(row=6, columnspan=3, pady=5)
 label7 = Label(frame, textvariable=pressure, bg="white", font="Helvetica 11")
-label7.grid(row=7, columnspan=3, pady=10)
+label7.grid(row=7, columnspan=3, pady=5)
 label8 = Label(frame, textvariable=humidity, bg="white", font="Helvetica 11")
-label8.grid(row=8, columnspan=3, pady=10)
+label8.grid(row=8, columnspan=3, pady=5)
 label9 = Label(frame, textvariable=speed, bg="white", font="Helvetica 11")
-label9.grid(row=9, columnspan=3, pady=10)
-# label10 = Label(frameBottom, textvariable=rise,bg="white").grid(row=9, column=1)
-# label11 = Label(frameBottom, textvariable=sunset,bg="white").grid(row=10, column=1)
+label9.grid(row=9, columnspan=3, pady=5)
+label10 = Label(frame, textvariable=rise, bg="white", font="Helvetica 11")
+label10.grid(row=10, columnspan=3, pady=5)
+label11 = Label(frame, textvariable=sunset, bg="white", font="Helvetica 11")
+label11.grid(row=11, columnspan=3, pady=5)
 button_quit = Button(window, text="Exit", font="Helvetica 10", width=6, command=window.quit)
-button_quit.grid(row=10, columnspan=3, padx=8, pady=8)
+button_quit.grid(row=12, columnspan=3, padx=8, pady=8)
 window.resizable(False, False)
 window.mainloop()
