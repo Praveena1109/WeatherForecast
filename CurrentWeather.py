@@ -3,14 +3,14 @@ import json
 import ssl
 import time
 
-api_key = '01636248d26b814822706760b27b11fa'
+api_key = 'API_KEY'  # Enter your api key
 serviceurl = 'https://api.openweathermap.org/data/2.5/weather?'
 
 ctx = ssl.create_default_context()
 ctx.check_hostname = False
 ctx.verify_mode = ssl.CERT_NONE
 answer = True
-while (answer):
+while answer:
     city = input('Enter City: ')
     if len(city) < 1:
         break
@@ -33,7 +33,7 @@ while (answer):
         print("==== Enter appropriate city ===")
         continue
 
-    print("City :", js['name'])
+    print("City : "+ js['name'])
     print("Country Code :", js['sys']['country'])
     print("Weather condition : ", js['weather'][0]['main'], ",", js['weather'][0]['description'])
     print("Temperature :", '%.3f' % (js['main']['temp'] - 273.15), u"\N{DEGREE SIGN}", "C")
@@ -42,8 +42,8 @@ while (answer):
     print("Pressure :", js['main']['pressure'], "hPa")
     print("Humidity", js['main']['humidity'], "%")
     print("Wind speed :", js['wind']['speed'], "m/s")
-    sunrise = time.strftime("%D %H:%M", time.localtime(int(js['sys']['sunrise']))).split()
-    sunset = time.strftime("%D %H:%M", time.localtime(int(js['sys']['sunset']))).split()
+    sunrise = time.strftime("%D %H:%M", time.gmtime(int(js['sys']['sunrise'])+int(js['timezone']))).split()
+    sunset = time.strftime("%D %H:%M", time.gmtime(int(js['sys']['sunset'])+int(js['timezone']))).split()
     print("Sunrise time :", sunrise[1])
     print("Sunset time :", sunset[1])
     print("Do you want to search again??", "Y/N")
